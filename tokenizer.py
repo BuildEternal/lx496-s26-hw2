@@ -1,11 +1,10 @@
 """
 Code for Problem 2 of HW 2.
 """
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import torch
 from bs4 import BeautifulSoup
-from datasets.arrow_dataset import Batch
 from nltk.tokenize import TreebankWordTokenizer
 
 
@@ -33,7 +32,7 @@ class Tokenizer:
         else:
             return self.indices["[UNK]"]
 
-    def __call__(self, batch: Batch) -> Dict[str, torch.LongTensor]:
+    def __call__(self, batch: Dict[str, Any]) -> Dict[str, torch.LongTensor]:
         """
         Problem 2e: Implement this function.
 
