@@ -47,7 +47,7 @@ submission instructions may result in a penalty of up to 1 point.
 
 ## Grading
 
-The point values for each problem are given below. Problems 1c, 2b, and 4d are worth 1 extra credit point, but the
+The point values for each problem are given below. Problems 1c, 2b, 3a, and 4d are worth 1 extra credit point, but the
 maximum
 possible grade on this assignment is 20 points. If you earn a total of 20 points or more _including the extra
 credit points_, then your grade will be 20.
@@ -60,6 +60,7 @@ credit points_, then your grade will be 20.
 | 2b: Extra Credit                        | Written      | 1 EC     |
 | 2d: Implement the Tokenization Pipeline | Code         | 2        |
 | 2e: Prepare Model Input                 | Code         | 2        |
+| 3a: Extra Credit                        | Written      | 1 EC     |
 | 3b: Define Architecture Components      | Code         | 2        |
 | 3c: Load Pre-Trained Embeddings         | Code         | 1        |
 | 3d: Define Forward Pass                 | Code         | 3        |
