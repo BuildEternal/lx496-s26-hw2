@@ -91,7 +91,7 @@ encouraged to debug and resubmit your code if one or more unit tests fail.
 For code questions, you will receive:
 
 * full points if your code runs and passes all test cases
-* at least 1 point if your code runs but fails at least one test case
+* at least .5 points if your code runs but fails at least one test case
 * 0 points if your code does not run.
 
 Partial credit may be awarded at Yulu's discretion, depending on the correctness of your logic and the severity of
@@ -105,7 +105,7 @@ For written problems, you will receive:
 
 * full points if results are reported accurately and are accompanied by at least 1 to 2 sentences of thoughtful
   analysis
-* at least .4 points if a good-faith effort (according to Yulu's judgment) has been made to answer the question
+* at least .5 points if a good-faith effort (according to Yulu's judgment) has been made to answer the question
 * 0 points if your answer is blank.
 
 Partial credit may be awarded at Yulu's discretion.
