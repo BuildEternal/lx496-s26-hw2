@@ -1,11 +1,15 @@
 """
 Code for Problem 2 of HW 2.
 """
+
 from typing import Any, Dict, List
 
 import torch
 from bs4 import BeautifulSoup
+from nltk import sent_tokenize, download
 from nltk.tokenize import TreebankWordTokenizer
+
+download("punkt_tab")
 
 
 class Tokenizer:
@@ -42,7 +46,16 @@ class Tokenizer:
         :param batch: A batch of examples in raw form
         :return: The batch, in tensor form
         """
-        raise NotImplementedError("Problem 2e has not been completed yet!")
+        text_tokenized = [self.postprocess(self.tokenize(self.normalize(s))) for s in batch["text"]]
+        text_lengths = [len(s) for s in text_tokenized]
+        max_text_length = max(text_lengths)
+        text_encoded = [[self[w] for w in s] + [self["[PAD]"]] * (max_text_length - len(s)) for s in text_tokenized]
+
+        out_text = torch.LongTensor(text_encoded)
+        out_label = torch.LongTensor(batch["label"])
+        out_lengths = torch.LongTensor(text_lengths)
+
+        return {"text": out_text, "label": out_label, "lengths": out_lengths}
 
     @staticmethod
     def normalize(text: str) -> str:
@@ -66,7 +79,7 @@ class Tokenizer:
         :param text: A text, represented as a raw string
         :return: The text, split into a list of tokens
         """
-        raise NotImplementedError("Problem 2d has not been completed yet!")
+        return [item for s in sent_tokenize(text) for item in TreebankWordTokenizer().tokenize(s)]
 
     def postprocess(self, tokens: List[str]) -> List[str]:
         """
@@ -78,4 +91,7 @@ class Tokenizer:
         :param tokens: A list of tokens
         :return: The post-processed tokens
         """
-        raise NotImplementedError("Problem 2d has not been completed yet!")
+        processed_tokens = [s if s in self.indices else "[UNK]" for s in tokens]
+        processed_tokens.insert(0, "[BOS]")
+        processed_tokens.append("[EOS]")
+        return processed_tokens
