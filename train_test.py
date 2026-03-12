@@ -31,9 +31,13 @@ def evaluate(model: LSTMSentimentClassifier, test_data: Dataset,
     """
     model.eval()
     with torch.no_grad():
+        num_correct = 0
         for i in tqdm(range(0, len(test_data), batch_size)):
             batch = test_data[i:i + batch_size]
-            raise NotImplementedError("Problem 4b has not been completed yet!")
+            logit_scores = model(batch["text"], batch["lengths"])
+            sentiments = logit_scores[:, 0] < logit_scores[:, 1]
+            num_correct += sum(sentiments == batch["label"])
+        return num_correct / len(test_data)
 
 
 def train(model: LSTMSentimentClassifier, train_data: Dataset,
@@ -61,6 +65,10 @@ def train(model: LSTMSentimentClassifier, train_data: Dataset,
     loss_function = nn.CrossEntropyLoss()
     adam = optim.Adam(model.parameters(), lr=lr)
 
+    best_val_acc = 0
+    epochs_without_improvement = 0
+    torch.save(model.state_dict(), filename)
+
     for epoch in range(max_epochs):
         print("Epoch {} of {}".format(epoch + 1, max_epochs))
 
@@ -69,13 +77,24 @@ def train(model: LSTMSentimentClassifier, train_data: Dataset,
         model.train()
         for i in tqdm(range(0, len(train_data), batch_size)):
             batch = train_data[i:i + batch_size]
-            # TODO: Write your training code here
-            raise NotImplementedError("Problem 4c has not been completed yet!")
+            adam.zero_grad()
+            loss_function(model(batch["text"], batch["lengths"]), batch["label"]).backward()
+            adam.step()
 
         # Test on validation data
         print("Evaluating on validation data...")
         val_acc = evaluate(model, val_data, batch_size=batch_size)
         print("Validation accuracy: {:.3f}".format(val_acc))
 
-        # TODO: Write your early stopping code here
-        raise NotImplementedError("Problem 4c has not been completed yet!")
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            epochs_without_improvement = 0
+            torch.save(model.state_dict(), filename)
+        else:
+            epochs_without_improvement += 1
+
+        if epochs_without_improvement >= patience:
+            print("Stopping early after {} epoch(s).".format(epoch + 1))
+            break
+
+    model.load_state_dict(torch.load(filename))

@@ -32,9 +32,9 @@ class LSTMSentimentClassifier(nn.Module):
 
         # Replace the "None"s below with the appropriately initialized
         # modules
-        self.embeddings = None
-        self.lstm = None
-        self.linear = None
+        self.embeddings = nn.Embedding(vocab_size, embedding_size)
+        self.lstm = nn.LSTM(embedding_size, hidden_size, batch_first=True)
+        self.linear = nn.Linear(hidden_size, 2)
 
     def load_pretrained_embeddings(self, embeddings: Embeddings):
         """
@@ -46,7 +46,8 @@ class LSTMSentimentClassifier(nn.Module):
 
         :param embeddings: The pre-trained embeddings
         """
-        raise NotImplementedError("Problem 3c has not been completed yet!")
+        with torch.no_grad():
+            self.embeddings.weight[:-4] = torch.tensor(embeddings.vectors)
 
     def forward(self, text: torch.LongTensor, lengths: torch.LongTensor) -> \
             torch.FloatTensor:
@@ -67,4 +68,7 @@ class LSTMSentimentClassifier(nn.Module):
         :return: The logit scores predicted for each text in the batch.
             Shape: (batch_size, 2)
         """
-        raise NotImplementedError("Problem 3d has not been completed yet!")
+        embedded = self.embeddings(text)
+        hidden_states, _ = self.lstm(embedded)
+        last_hidden_states = hidden_states[torch.arange(hidden_states.size(0)), lengths - 1]
+        return self.linear(last_hidden_states)
