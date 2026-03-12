@@ -27,3 +27,20 @@ and all other reviews (considered neutral by the paper) were not included in the
 If I recall correctly, these are called "morphemes", and it's important to break down words into their individual
 morphemes during tokenization because each morpheme has its own basic semantic information, which will make the
 tokenization higher resolution and more accurate, so to speak.
+
+## Problem 4
+
+### Problem 4d
+
+The model I trained with pre-trained embeddings stopped training after $4$ epochs with an accuracy of $0.759$ (which was the
+result of training after $2$ epochs).
+
+The model I trained without pre-trained embeddings stopped training after $5$ epochs with an accuracy of $0.626$ (which was
+the result of training after $3$ epochs).
+
+It's interesting, though expected, that the pre-trained model had a higher accuracy. This makes sense since that model
+will have a better understanding of the actual meaning of the reviews, and has that information available for inferring
+sentiment. Considering that random choice has $50\%$ accuracy, I'm not particularly impressed by either of these models,
+but I'm surprised the model without pre-trained embeddings was able to improve despite not have the semantic information
+available. I wonder how these sentiment classification models could be improved, considering that even the model with
+pre-trained embeddings seemed to peak at just $\sim76\%$.
